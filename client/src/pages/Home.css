@@ -1,0 +1,46 @@
+.festival-container {
+  display: flex;
+  flex-wrap: wrap; /* Permet aux éléments de passer à la ligne */
+  justify-content: space-between; /* Espacement entre les colonnes */
+  gap: 20px;
+  padding: 20px;
+}
+
+.festival-card {
+  flex: 1 1 calc(50% - 20px); /* Deux colonnes avec un petit espace */
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  max-width: calc(50% - 20px); /* Empêche les cartes de dépasser 50% */
+}
+
+.festival-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.reservation-link {
+  display: block;
+  text-align: center;
+  background-color: #007bff;
+  color: white;
+  padding: 5px;
+  text-decoration: none;
+  border-radius: 4px;
+  margin-top: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.reservation-link:hover {
+  background-color: #0056b3;
+}
+
+/* Responsive : Une seule colonne sur mobile */
+@media (max-width: 768px) {
+  .festival-card {
+    flex: 1 1 100%;
+    max-width: 100%;
+  }
+}
