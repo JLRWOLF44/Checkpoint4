@@ -3,10 +3,23 @@
   "files": {
     "ignore": ["**/dist/*", "**/*.template.*", "**/tsconfig.json", "coverage"]
   },
-  "formatter": { "indentStyle": "space" },
-  "organizeImports": { "enabled": true },
+  "formatter": {
+    "indentStyle": "space"
+  },
+  "organizeImports": {
+    "enabled": true
+  },
   "linter": {
     "enabled": true,
-    "rules": { "recommended": true, "suspicious": { "noConsoleLog": "error" } }
+    "rules": {
+      "recommended": true,
+      "suspicious": {
+        "noConsoleLog": "error",
+        "noAsyncPromiseExecutor": "off"
+      },
+      "style": {
+        "noParameterAssign": "off"
+      }
+    }
   }
 }

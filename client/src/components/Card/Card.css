@@ -1,3 +1,13 @@
+/* Conteneur des cartes */
+.cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; /* Centre les cartes */
+  gap: 12px; /* Espacement entre les cartes */
+  padding: 20px;
+}
+
+/* Style de la carte */
 figure {
   margin: 0;
   color: rgb(227, 227, 227);
@@ -5,26 +15,36 @@ figure {
   box-shadow: 0 0 5px #3b3b3b;
   overflow: hidden;
   border-radius: 8px;
-  height: 400px;
-  width: 275px;
+  width: 220px; /* Réduction de la largeur */
+  height: 300px; /* Réduction de la hauteur */
+  transition: transform 250ms ease-out;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
-figure {
-  transition: all 250ms ease-out;
-}
-
+/* Image */
 figure > img {
-  height: 100%;
   width: 100%;
+  height: 75%; /* Ajustement de la hauteur */
   object-fit: cover;
 }
 
+/* Effet au survol */
 figure:hover {
   cursor: pointer;
-  transform: scale(1.02);
+  transform: scale(1.03);
 }
 
+/* Texte sous l'image */
 figure > figcaption {
-  padding: 16px 0;
-  font-size: 1.5rem;
+  padding: 10px;
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+/* Lien */
+.card-link {
+  text-decoration: none;
 }

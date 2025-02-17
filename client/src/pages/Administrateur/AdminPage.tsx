@@ -40,7 +40,7 @@ function AdminPage() {
       name: newFestivalName,
       place: newFestivalPlace,
       seats: Number.parseInt(newFestivalSeats, 10),
-      image: newFestivalImage,
+      picture: newFestivalImage,
     };
 
     fetch("http://localhost:3310/api/events", {
@@ -56,21 +56,33 @@ function AdminPage() {
       })
       .catch((err) => console.error("Erreur :", err));
   };
-
-  // Supprimer un festival
-  const deleteFestival = (id: string) => {
+  const deleteFestival = async (id: string) => {
     const confirmDelete = window.confirm(
       "Êtes-vous sûr de vouloir supprimer ce festival ?",
     );
     if (!confirmDelete) return;
 
-    fetch(`http://localhost:3310/api/events/${id}`, { method: "DELETE" })
-      .then(() =>
-        setFestivals(festivals.filter((festival) => festival.id !== id)),
-      )
-      .catch((err) => console.error("Erreur :", err));
-  };
+    try {
+      const response = await fetch(`http://localhost:3310/api/events/${id}`, {
+        method: "DELETE",
+      });
 
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(
+          errorData.error || "Erreur lors de la suppression du festival",
+        );
+      }
+
+      // Mettre à jour l'état local
+      setFestivals(festivals.filter((festival) => festival.id !== id));
+      setMessage("Festival supprimé avec succès !");
+      setTimeout(() => setMessage(""), 3000);
+    } catch (err) {
+      console.error("Erreur :", err);
+      setMessage("Erreur lors de la suppression du festival.");
+    }
+  };
   return (
     <div className="admin-page">
       {/* Bouton de retour vers Home */}
@@ -123,9 +135,13 @@ function AdminPage() {
             <h3>{festival.name}</h3>
             <p>Lieu : {festival.place}</p>
             <p>Nombre de places : {festival.seats}</p>
-            <img src={festival.picture} alt={festival.name} width="150" />
-            <button type="button" onClick={() => deleteFestival(festival.id)}>
-              ❌ Supprimer
+            <img src={festival.picture} alt={festival.name} />
+            <button
+              type="button"
+              className="delete-button"
+              onClick={() => deleteFestival(festival.id)}
+            >
+              Supprimer
             </button>
           </li>
         ))}

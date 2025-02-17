@@ -32,6 +32,68 @@ interface Event extends RowDataPacket {
   picture: string;
 }
 
+// Route pour ajouter un nouvel événement
+app.post("/api/events", async (req: Request, res: Response) => {
+  const { name, place, number_of_places, picture } = req.body;
+
+  // Validation des champs
+  if (!name || !place || !number_of_places || !picture) {
+    return res.status(400).json({ error: "Tous les champs sont requis." });
+  }
+
+  try {
+    // Insérer l'événement dans la base de données
+    const query =
+      "INSERT INTO evenements (name, place, number_of_places, picture) VALUES (?, ?, ?, ?)";
+    const [result] = await db.query(query, [
+      name,
+      place,
+      number_of_places,
+      picture,
+    ]);
+
+    // Récupérer l'ID de l'événement inséré
+    const insertId = (result as any).insertId;
+
+    // Renvoyer l'événement créé avec son ID
+    const newEvent = {
+      id: insertId,
+      name,
+      place,
+      number_of_places,
+      picture,
+    };
+
+    res.status(201).json(newEvent);
+  } catch (error) {
+    console.error("Erreur lors de l'ajout de l'événement :", error);
+    res.status(500).json({ error: "Erreur lors de l'ajout de l'événement" });
+  }
+});
+
+// Route pour supprimer un événement
+app.delete("/api/events/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    // Vérifier si l'événement existe
+    const [event] = await db.query("SELECT * FROM evenements WHERE id = ?", [
+      id,
+    ]);
+    if (!event) {
+      return res.status(404).json({ error: "Événement non trouvé" });
+    }
+
+    // Supprimer l'événement
+    await db.query("DELETE FROM evenements WHERE id = ?", [id]);
+    console.error("Événement supprimé avec succès");
+    res.status(200).json({ message: "Festival supprimé avec succès" });
+  } catch (error) {
+    console.error("Erreur lors de la suppression du festival :", error);
+    res.status(500).json({ error: "Erreur lors de la suppression" });
+  }
+});
+
 // Route pour récupérer tous les événements
 app.get("/api/events", async (req: Request, res: Response) => {
   const query = "SELECT * FROM evenements";
@@ -67,6 +129,11 @@ app.get(
     }
   },
 );
+
+// Nouvelle route
+app.get("/:id", async (req: Request<{ id: string }>, res: Response) => {
+  res.send(`ID: ${req.params.id}`);
+});
 
 // Get the port from the environment variables
 const port = process.env.APP_PORT;

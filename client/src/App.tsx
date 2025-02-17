@@ -4,6 +4,7 @@ import { Outlet } from "react-router-dom";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
 import AdminPage from "./pages/Administrateur/AdminPage";
+import FormulaireReserv from "./pages/FormulaireReserv/FormulaireReserv";
 import Home from "./pages/Home";
 import Reservation from "./pages/ReservationPage";
 
@@ -36,6 +37,7 @@ function App() {
       <Route path="/" element={<Layout />}>
         <Route index element={<Home />} />
         <Route path="/reservation/:id" element={<Reservation />} />
+        <Route path="/reservation/:id/form" element={<FormulaireReserv />} />
         <Route path="/admin" element={<AdminPage />} />
       </Route>
       {/* Ajoute une route pour gérer les erreurs */}

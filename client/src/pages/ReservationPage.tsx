@@ -4,14 +4,14 @@ import type { FestivalI } from "../types/app";
 import "./ReservationPage.css";
 
 function Reservation() {
-  const { id } = useParams<{ id: string }>(); // Récupérer l'ID de l'événement depuis l'URL
-  const navigate = useNavigate(); // Déclare le hook pour la navigation
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   const [festival, setFestival] = useState<FestivalI | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetch(`http://localhost:3310/api/events/${id}`) // Récupérer les détails de l'événement
+    fetch(`http://localhost:3310/api/events/${id}`)
       .then((res) => res.json())
       .then((data) => {
         setFestival(data);
@@ -26,7 +26,7 @@ function Reservation() {
 
   // Fonction pour revenir à la page d'accueil
   const handleGoHome = () => {
-    navigate("/"); // Naviguer vers la page d'accueil
+    navigate("/");
   };
 
   return (
@@ -38,7 +38,11 @@ function Reservation() {
         className="festival-image"
       />
       <p className="festival-place">Lieu : {festival.place}</p>
-      <button type="button" className="reservation-button">
+      <button
+        type="button"
+        className="reservation-button"
+        onClick={() => navigate(`/reservation/${id}/form`)}
+      >
         Réserver maintenant
       </button>
       <button
